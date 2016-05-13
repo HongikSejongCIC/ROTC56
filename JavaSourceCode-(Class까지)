@@ -1,0 +1,93 @@
+Enter file contents here
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class StudentActivity extends JFrame{
+	StudentActivity(){
+		setTitle("Student Chart");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		Container c = getContentPane();
+		c.setLayout(new FlowLayout());
+		JButton bu1 = new JButton("What's Eat?");
+		JButton bu2 = new JButton("My Health?");
+		JButton bu3 = new JButton("Favorite Site");
+		JButton bu4 = new JButton("Note");
+		bu1.addItemListener(new Item());
+		c.add(bu1);
+		bu2.addItemListener(new Item());
+		c.add(bu2);
+		bu3.addActionListener(new Action());
+		c.add(bu3);
+		bu4.addActionListener(new Action());
+		c.add(bu4);
+		
+
+		
+		
+	setSize(300,300);
+	setVisible(true);
+	}
+	public static void main(String args[]){
+		new Login();
+	}
+}
+
+class Eat extends JFrame{ //오늘 뭐 먹지 에 관한 내용
+	Eat(){
+		
+	}
+}
+class Health extends JFrame{ // 자가진단에 관한 내용
+	Health(){
+		
+	}
+	
+}
+class FavoriteSite extends JFrame{ 
+	FavoriteSite(){
+		
+	}
+}
+class Note extends JFrame{
+	Note(){
+		
+	}
+}
+class Login extends JFrame{
+	Login(){
+		
+	}
+}
+class Check{
+	private String id;
+	private String pw;
+	public boolean add(String id, String pw){
+		return true;
+	}
+	public boolean delete(String id, String pw){
+		return true;
+	}
+	public boolean check(String id, String pw){
+		return true;
+	}
+}
+class Action implements ActionListener{
+	public void actionPerformed(ActionEvent e1) {
+		JButton b = (JButton)e1.getSource();
+		if(b.getText().equals("What's Eat?")){
+			new Eat();
+		}
+		else if(b.getText().equals("My Health?")){
+			new Health();
+		}
+	}
+}
+class Item implements ItemListener{
+	public void itemStateChanged(ItemEvent e2) {
+
+		
+		
+	}
+}
