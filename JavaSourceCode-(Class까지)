@@ -14,9 +14,9 @@ public class StudentActivity extends JFrame{
 		JButton bu2 = new JButton("My Health?");
 		JButton bu3 = new JButton("Favorite Site");
 		JButton bu4 = new JButton("Note");
-		bu1.addItemListener(new Item());
+		bu1.addActionListener(new Action());
 		c.add(bu1);
-		bu2.addItemListener(new Item());
+		bu2.addActionListener(new Action());
 		c.add(bu2);
 		bu3.addActionListener(new Action());
 		c.add(bu3);
@@ -57,36 +57,105 @@ class Note extends JFrame{
 }
 class Login extends JFrame{
 	Login(){
+		setTitle("Login");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		Container c = getContentPane();
+		c.setLayout(new FlowLayout());
+		c.add(new Label("ID, PassWord"));
+		JTextField tf = new JTextField(20);
+		c.add(tf);
+		tf.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e3){
+				JTextField t1 = (JTextField)e3.getSource();
+					Check c = new Check();
+					c.check(t1.getText());
+				}
+		});
+		//JButton but1 = new JButton("Login");
+		JButton but2 = new JButton("Add");
+		JButton but3 = new JButton("delete");
+		//but1.addActionListener(new Action());
+		//c.add(but1);
+		but2.addActionListener(new Action());
+		c.add(but2);
+		but3.addActionListener(new Action());
+		c.add(but3);
+		
+		setSize(300,300);
+		setVisible(true);
 	}
 }
 class Check{
 	private String id;
 	private String pw;
-	public boolean add(String id, String pw){
-		return true;
+	private int k=0;
+	private String[] IDPW = new String[100];
+	public void add(String idpw){
+		System.out.print("3");
+		IDPW[k++]=idpw;
+		System.out.print("4");
 	}
-	public boolean delete(String id, String pw){
-		return true;
+	public void delete(String idpw){
+		int a;
+		for(a=0;a<k;a++){
+			if(idpw.equals(IDPW[a])){
+				IDPW[a]="0";	
+			}
+		}
 	}
-	public boolean check(String id, String pw){
-		return true;
-	}
+	public void check(String idpw){
+		int i = 0;
+		System.out.print("1");
+		for(i=0;i<100;i++){
+		if(idpw.equals(IDPW[i])){
+			System.out.print("2");
+			new StudentActivity();
+				}
+			}
+		}
 }
 class Action implements ActionListener{
 	public void actionPerformed(ActionEvent e1) {
 		JButton b = (JButton)e1.getSource();
+		Check c = new Check();
 		if(b.getText().equals("What's Eat?")){
 			new Eat();
 		}
 		else if(b.getText().equals("My Health?")){
 			new Health();
 		}
+		else if(b.getText().equals("Favorite Site")){
+			new FavoriteSite();
+		}
+		else if(b.getText().equals("Note")){
+			new Note();
+		}
+		/*else if(b.getText().equals("Login")){
+			Check c = new Check();
+			if(c.check(t1.getText())==true){
+			new StudentActivity();}
+		}*/
+		else if(b.getText().equals("Add")){
+			String name=JOptionPane.showInputDialog("구조:ID, PassWord");
+			if(name!=null){
+				c.add(name);
+			}
+		}
+		else if(b.getText().equals("delete")){
+			String name=JOptionPane.showInputDialog("구조:ID, PassWord");
+			if(name!=null){
+				c.delete(name);
+			}
+		}
 	}
 }
 class Item implements ItemListener{
 	public void itemStateChanged(ItemEvent e2) {
-
+		if(e2.getStateChange()==ItemEvent.SELECTED){
+			
+			
+		}
 		
 		
 	}
