@@ -48,21 +48,46 @@ class FavoriteSite extends JFrame{
 	FavoriteSite(){
 		setTitle("FavoriteSite");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		String Site[] = new String[100];
 		Container c = getContentPane();
 		c.setLayout(new BorderLayout(0,10));
 		c.add(new JLabel("입력 후 <Enter> 키를 입력하세요"),BorderLayout.NORTH);
 		c.add(new JScrollPane(ta),BorderLayout.SOUTH);
 		c.add(tf,BorderLayout.CENTER);
 		
-		for(int i=0;i<Site.length;i++){
-			ta.append(Site[i]);
+		try {
+			//FileOutputStream note = new FileOutputStream("note.txt");
+			FileReader note1 = new FileReader("Favorite.txt");
+			int c1;
+			while((c1=note1.read())!=-1){
+				char ccc = (char)c1;
+				System.out.println(ccc);
+				ta.append(Character.toString(ccc));
+			}
+			//note.close();
+			note1.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		tf.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e4){
 				JTextField t1 = (JTextField)e4.getSource();
 					ta.append(t1.getText()+"\n");
+					try {
+						FileOutputStream note = new FileOutputStream("Favorite.txt",true);
+						note.write((t1.getText()+"\n").getBytes());
+						note.close();
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					t1.setText("");
 				}
 		});
@@ -83,14 +108,13 @@ class Note extends JFrame{
 		c.add(new JScrollPane(ta),BorderLayout.SOUTH);
 		c.add(tf,BorderLayout.CENTER);
 		try {
-			byte b[] = new byte[100];
 			//FileOutputStream note = new FileOutputStream("note.txt");
 			FileReader note1 = new FileReader("note.txt");
-			int n=0, c1;
+			int c1;
 			while((c1=note1.read())!=-1){
-				String a=Integer.toString(c1);
-				System.out.println(a);
-				ta.append(a);
+				char ccc = (char)c1;
+				System.out.println(ccc);
+				ta.append(Character.toString(ccc));
 			}
 			//note.close();
 			note1.close();
@@ -107,8 +131,8 @@ class Note extends JFrame{
 				JTextField t1 = (JTextField)e4.getSource();
 					ta.append(t1.getText()+"\n");
 					try {
-						FileOutputStream note = new FileOutputStream("note.txt");
-						note.write(t1.getText().getBytes());
+						FileOutputStream note = new FileOutputStream("note.txt",true);
+						note.write((t1.getText()+"\n").getBytes());
 						note.close();
 					} catch (FileNotFoundException e) {
 						// TODO Auto-generated catch block
@@ -118,7 +142,7 @@ class Note extends JFrame{
 						e.printStackTrace();
 					}
 					t1.setText("");
-				}
+				}//~~~~~> 문제점: note.txt에 저장이 되서 불러와지긴 하나 캡슐화 필요
 		});
 		setSize(1000,1000);
 		setVisible(true);
