@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import javax.swing.*;
 
 public class StudentActivity extends JFrame{
@@ -21,7 +22,6 @@ public class StudentActivity extends JFrame{
 		c.add(bu3);
 		bu4.addActionListener(new Action());
 		c.add(bu4);
-		
 
 	setSize(300,300);
 	setVisible(true);
@@ -46,14 +46,18 @@ class FavoriteSite extends JFrame{
 	JTextArea ta = new JTextArea(30,30);
 	JTextField tf = new JTextField(20);
 	FavoriteSite(){
-		setTitle("Note");
+		setTitle("FavoriteSite");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		String Site[] = new String[100];
 		Container c = getContentPane();
 		c.setLayout(new BorderLayout(0,10));
 		c.add(new JLabel("입력 후 <Enter> 키를 입력하세요"),BorderLayout.NORTH);
 		c.add(new JScrollPane(ta),BorderLayout.SOUTH);
 		c.add(tf,BorderLayout.CENTER);
+		
+		for(int i=0;i<Site.length;i++){
+			ta.append(Site[i]);
+		}
 		
 		tf.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e4){
@@ -78,11 +82,41 @@ class Note extends JFrame{
 		c.add(new JLabel("입력 후 <Enter> 키를 입력하세요"),BorderLayout.NORTH);
 		c.add(new JScrollPane(ta),BorderLayout.SOUTH);
 		c.add(tf,BorderLayout.CENTER);
-
+		try {
+			byte b[] = new byte[100];
+			//FileOutputStream note = new FileOutputStream("note.txt");
+			FileReader note1 = new FileReader("note.txt");
+			int n=0, c1;
+			while((c1=note1.read())!=-1){
+				String a=Integer.toString(c1);
+				System.out.println(a);
+				ta.append(a);
+			}
+			//note.close();
+			note1.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
 		tf.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e4){
 				JTextField t1 = (JTextField)e4.getSource();
 					ta.append(t1.getText()+"\n");
+					try {
+						FileOutputStream note = new FileOutputStream("note.txt");
+						note.write(t1.getText().getBytes());
+						note.close();
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					t1.setText("");
 				}
 		});
@@ -123,8 +157,8 @@ class Login extends JFrame{
 class Check{
 	private String id;
 	private String pw;
-	static int k=0;
-	static String[] IDPW = new String[100];
+	static private int k=0;
+	static private String[] IDPW = new String[100];
 	public void add(String idpw){
 		//System.out.print("data in\n");
 		IDPW[k++]=idpw;
@@ -139,12 +173,8 @@ class Check{
 	}
 	public void check(String idpw){
 		int i = 0;
-		System.out.print("check in\n");
-	
-		for(i=0;i<100;i++){
-			System.out.println(IDPW[i]);		
+		for(i=0;i<100;i++){	
 		if(idpw.equals(IDPW[i])){
-			System.out.print("check for\n");
 			new StudentActivity();
 				}
 			}
