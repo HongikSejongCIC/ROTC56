@@ -33,12 +33,50 @@ public class StudentActivity extends JFrame{
 
 class Eat extends JFrame{ //오늘 뭐 먹지 에 관한 내용
 	Eat(){
+		setTitle("What's Eat?");
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		Container c = getContentPane();
+		c.setLayout(new FlowLayout());
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+		setSize(300,300);
+		setVisible(true);
 	}
 }
 class Health extends JFrame{ // 자가진단에 관한 내용
 	Health(){
+		setTitle("Health");
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		Container c = getContentPane();
+		c.setLayout(new FlowLayout());
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+		setSize(300,300);
+		setVisible(true);
 	}
 	
 }
@@ -53,14 +91,16 @@ class FavoriteSite extends JFrame{
 		c.add(new JLabel("입력 후 <Enter> 키를 입력하세요"),BorderLayout.NORTH);
 		c.add(new JScrollPane(ta),BorderLayout.SOUTH);
 		c.add(tf,BorderLayout.CENTER);
-		
+		String filename[] = {"Favorite.txt","Favorite1.txt","Favorite2.txt","Favorite3.txt","Favorite4.txt","Favorite5.txt","Favorite6.txt","Favorite7.txt",
+				"Favorite8.txt","Favorite9.txt"}; // 캡슐화
+		Check cc= new Check();
+		int l = cc.data();
 		try {
 			//FileOutputStream note = new FileOutputStream("note.txt");
-			FileReader note1 = new FileReader("Favorite.txt");
+			FileReader note1 = new FileReader(filename[l]);
 			int c1;
 			while((c1=note1.read())!=-1){
 				char ccc = (char)c1;
-				System.out.println(ccc);
 				ta.append(Character.toString(ccc));
 			}
 			//note.close();
@@ -78,7 +118,7 @@ class FavoriteSite extends JFrame{
 				JTextField t1 = (JTextField)e4.getSource();
 					ta.append(t1.getText()+"\n");
 					try {
-						FileOutputStream note = new FileOutputStream("Favorite.txt",true);
+						FileOutputStream note = new FileOutputStream(filename[l],true);
 						note.write((t1.getText()+"\n").getBytes());
 						note.close();
 					} catch (FileNotFoundException e) {
@@ -101,19 +141,21 @@ class Note extends JFrame{
 	Note(){
 		setTitle("Note");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		String filename[] = {"note.txt","note1.txt","note2.txt","note3.txt","note4.txt","note5.txt","note6.txt","note7.txt",
+				"note8.txt","note9.txt"};
 		Container c = getContentPane();
 		c.setLayout(new BorderLayout(0,10));
 		c.add(new JLabel("입력 후 <Enter> 키를 입력하세요"),BorderLayout.NORTH);
 		c.add(new JScrollPane(ta),BorderLayout.SOUTH);
 		c.add(tf,BorderLayout.CENTER);
+		Check cc= new Check();
+		int l = cc.data();
 		try {
 			//FileOutputStream note = new FileOutputStream("note.txt");
-			FileReader note1 = new FileReader("note.txt");
+			FileReader note1 = new FileReader(filename[l]);
 			int c1;
 			while((c1=note1.read())!=-1){
 				char ccc = (char)c1;
-				System.out.println(ccc);
 				ta.append(Character.toString(ccc));
 			}
 			//note.close();
@@ -131,7 +173,7 @@ class Note extends JFrame{
 				JTextField t1 = (JTextField)e4.getSource();
 					ta.append(t1.getText()+"\n");
 					try {
-						FileOutputStream note = new FileOutputStream("note.txt",true);
+						FileOutputStream note = new FileOutputStream(filename[l],true);
 						note.write((t1.getText()+"\n").getBytes());
 						note.close();
 					} catch (FileNotFoundException e) {
@@ -179,10 +221,18 @@ class Login extends JFrame{
 	}
 }
 class Check{
-	private String id;
-	private String pw;
+	static private String dataidpw;
 	static private int k=0;
 	static private String[] IDPW = new String[100];
+	public int data(){
+		int num=0;
+		for(int i=0;i<100;i++){	
+			if(dataidpw.equals(IDPW[i])){
+				num = i;
+		}
+	}
+		return num;
+	}
 	public void add(String idpw){
 		//System.out.print("data in\n");
 		IDPW[k++]=idpw;
@@ -196,6 +246,7 @@ class Check{
 		}
 	}
 	public void check(String idpw){
+		dataidpw=idpw;
 		int i = 0;
 		for(i=0;i<100;i++){	
 		if(idpw.equals(IDPW[i])){
