@@ -9,19 +9,39 @@ public class StudentActivity extends JFrame{
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		Container c = getContentPane();
-		c.setLayout(new FlowLayout());
+		c.setLayout(new BorderLayout());
+		JPanel J = new JPanel(new GridLayout(2,2,5,5));
+		
+		MenuListener mm = new MenuListener();
+		JMenuBar mbar=new JMenuBar();
+		
+		JMenu menu=new JMenu("Delete Data");
+		mbar.add(menu);
+		
+		JMenuItem men1= new JMenuItem("Favorite Data");
+		menu.add(men1);
+		men1.addActionListener(mm);
+		JMenuItem men2= new JMenuItem("Note Data");
+		menu.add(men2);
+		men2.addActionListener(mm);
+		setJMenuBar(mbar);
+		
 		JButton bu1 = new JButton("What's Eat?");
 		JButton bu2 = new JButton("My Health?");
 		JButton bu3 = new JButton("Favorite Site");
 		JButton bu4 = new JButton("Note");
 		bu1.addActionListener(new Action());
-		c.add(bu1);
+		J.add(bu1);
+		//bu1.setOpaque(true);
+		//bu1.setBackground(Color.ORANGE);
 		bu2.addActionListener(new Action());
-		c.add(bu2);
+		J.add(bu2);
 		bu3.addActionListener(new Action());
-		c.add(bu3);
+		J.add(bu3);
 		bu4.addActionListener(new Action());
-		c.add(bu4);
+		J.add(bu4);
+		c.requestFocus();
+		c.add(J, BorderLayout.CENTER);
 
 	setSize(300,300);
 	setVisible(true);
@@ -80,21 +100,31 @@ class Health extends JFrame{ // 자가진단에 관한 내용
 	}
 	
 }
-class FavoriteSite extends JFrame{ 
-	JTextArea ta = new JTextArea(30,30);
+class FavoriteSite extends JFrame{ // 하이퍼링크는 구현불가, 의미 부여
+	JTextArea ta = new JTextArea(45,30);
 	JTextField tf = new JTextField(20);
 	FavoriteSite(){
 		setTitle("FavoriteSite");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Container c = getContentPane();
 		c.setLayout(new BorderLayout(0,10));
-		c.add(new JLabel("입력 후 <Enter> 키를 입력하세요"),BorderLayout.NORTH);
+		c.add(new JLabel("입력 후 <Enter> 키를 입력하세요, 자동 저장됩니다. 입력시에 주의해서 입력하시오. ( 자주 가는 사이트 등록 후 어디였는지 조회 )"),BorderLayout.NORTH);
 		c.add(new JScrollPane(ta),BorderLayout.SOUTH);
 		c.add(tf,BorderLayout.CENTER);
-		String filename[] = {"Favorite.txt","Favorite1.txt","Favorite2.txt","Favorite3.txt","Favorite4.txt","Favorite5.txt","Favorite6.txt","Favorite7.txt",
-				"Favorite8.txt","Favorite9.txt"}; // 캡슐화
+		String filename[] = {"Favorite0.txt","Favorite1.txt","Favorite2.txt","Favorite3.txt","Favorite4.txt",
+				"Favorite5.txt"	,"Favorite6.txt","Favorite7.txt","Favorite8.txt","Favorite9.txt","Favorite10.txt"
+				,"Favorite11.txt","Favorite12.txt","Favorite13.txt","Favorite14.txt","Favorite15.txt",
+				"Favorite16.txt","Favorite17.txt","Favorite18.txt","Favorite19.txt"}; // 캡슐화
 		Check cc= new Check();
 		int l = cc.data();
+		 try {
+	    	  for(int ff=0;ff<filename.length;ff++){
+	        	File f1 = new File(filename[ff]);
+	            f1.createNewFile();
+	            }
+	        } catch (IOException e1) {
+	            e1.printStackTrace();
+	        }
 		try {
 			//FileOutputStream note = new FileOutputStream("note.txt");
 			FileReader note1 = new FileReader(filename[l]);
@@ -136,20 +166,30 @@ class FavoriteSite extends JFrame{
 	}
 }
 class Note extends JFrame{
-	JTextArea ta = new JTextArea(30,30);
+	JTextArea ta = new JTextArea(45,30);
 	JTextField tf = new JTextField(20);
 	Note(){
 		setTitle("Note");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		String filename[] = {"note.txt","note1.txt","note2.txt","note3.txt","note4.txt","note5.txt","note6.txt","note7.txt",
-				"note8.txt","note9.txt"};
+		String filename[] = {"note0.txt","note1.txt","note2.txt","note3.txt","note4.txt","note5.txt","note6.txt","note7.txt",
+				"note8.txt","note9.txt","note10.txt","note11.txt","note12.txt","note13.txt","note14.txt"
+				,"note15.txt","note16.txt","note17.txt","note18.txt","note19.txt","note20.txt"};// 캡슐화
 		Container c = getContentPane();
 		c.setLayout(new BorderLayout(0,10));
-		c.add(new JLabel("입력 후 <Enter> 키를 입력하세요"),BorderLayout.NORTH);
+		c.add(new JLabel("입력 후 <Enter> 키를 입력하세요, 자동 저장됩니다. 입력시에 주의해서 입력하시오."),BorderLayout.NORTH);
 		c.add(new JScrollPane(ta),BorderLayout.SOUTH);
 		c.add(tf,BorderLayout.CENTER);
 		Check cc= new Check();
 		int l = cc.data();
+		 
+	      try {
+	    	  for(int ff=0;ff<filename.length;ff++){
+	        	File f1 = new File(filename[ff]);
+	            f1.createNewFile();
+	            }
+	        } catch (IOException e1) {
+	            e1.printStackTrace();
+	        }
 		try {
 			//FileOutputStream note = new FileOutputStream("note.txt");
 			FileReader note1 = new FileReader(filename[l]);
@@ -197,8 +237,9 @@ class Login extends JFrame{
 		
 		Container c = getContentPane();
 		c.setLayout(new FlowLayout());
-		c.add(new Label("ID, PassWord"));
-		c.add(new Label("로그인 하려면 enter하세요"));
+		JPanel J = new JPanel(new BorderLayout(5,5));
+		c.add(new Label("ID, PassWord(입력 방법), 로그인 하려면 <Enter>하세요"));
+		//c.add(new Label(""));
 		JTextField tf = new JTextField(20);
 		c.add(tf);
 		tf.addActionListener(new ActionListener(){
@@ -212,11 +253,13 @@ class Login extends JFrame{
 		JButton but1 = new JButton("Add");
 		JButton but2 = new JButton("delete");
 		but1.addActionListener(new Action());
-		c.add(but1);
+		J.add(but1);
 		but2.addActionListener(new Action());
-		c.add(but2);
-		
-		setSize(300,300);
+		J.add(but2);
+		c.requestFocus();
+		c.add(but1, BorderLayout.WEST);
+		c.add(but2, BorderLayout.EAST);
+		setSize(400,130);
 		setVisible(true);
 	}
 }
@@ -294,4 +337,44 @@ class Item implements ItemListener{
 		
 		
 	}
+}
+class MenuListener implements ActionListener{
+
+	public void actionPerformed(ActionEvent e) {
+	String A = e.getActionCommand();
+	switch(A){
+	case "Favorite Data":
+		Check cFavor= new Check();
+		int favor = cFavor.data();
+		String favordata = "Favorite"+favor+".txt";
+		System.out.println(favordata);
+		File favorfile = new File(favordata);
+		if(favorfile.isFile()){
+			favorfile.delete();
+		}
+		 File f1 = new File(favordata);
+	        try {
+	            f1.createNewFile();
+	        } catch (IOException e1) {
+	            e1.printStackTrace();
+	        }
+		break;
+	case "Note Data":
+		Check cNote= new Check();
+		int fnote = cNote.data();
+		String fnotedata = "note"+fnote+".txt";
+		File fnotefile = new File(fnotedata);
+		if(fnotefile.isFile()){
+			fnotefile.delete();
+		}
+		 File f2 = new File(fnotedata);
+	        try {
+	            f2.createNewFile();
+	        } catch (IOException e1) {
+	            e1.printStackTrace();
+	        }
+		break;
+	}
+	}
+	
 }
