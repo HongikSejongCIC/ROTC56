@@ -5,33 +5,33 @@ import javax.swing.*;
 
 public class StudentActivity extends JFrame{
 	StudentActivity(){
-		setTitle("Student Chart");
-		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Student Chart"); //해당 화면의 제목
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); ~> x 누르면 프로그램이 종료됨.
 		
-		Container c = getContentPane();
-		c.setLayout(new BorderLayout());
+		Container c = getContentPane(); //컨텐트팬 알아내기
+		c.setLayout(new BorderLayout()); // 배치관리자 설정
 		JPanel J = new JPanel(new GridLayout(2,2,5,5));
 		
 		MenuListener mm = new MenuListener();
-		JMenuBar mbar=new JMenuBar();
+		JMenuBar mbar=new JMenuBar(); // MenuBar 생성
 		
-		JMenu menu=new JMenu("Delete Data");
+		JMenu menu=new JMenu("Delete Data"); // Menu 생성
 		mbar.add(menu);
 		
-		JMenuItem men1= new JMenuItem("Favorite Data");
-		menu.add(men1);
-		men1.addActionListener(mm);
+		JMenuItem men1= new JMenuItem("Favorite Data"); // 메뉴아이템 생성
+		menu.add(men1); // 메뉴아이템을 메뉴에 연결
+		men1.addActionListener(mm); // ItemListener를 부착하여 해당 기능 실행하도록 만듬
 		JMenuItem men2= new JMenuItem("Note Data");
 		menu.add(men2);
 		men2.addActionListener(mm);
-		setJMenuBar(mbar);
+		setJMenuBar(mbar); // 메뉴바를 프레임에 부착
 		
-		JButton bu1 = new JButton("What's Eat?");
+		JButton bu1 = new JButton("What's Eat?"); 
 		JButton bu2 = new JButton("My Health?");
 		JButton bu3 = new JButton("Favorite Site");
-		JButton bu4 = new JButton("Note");
-		bu1.addActionListener(new Action());
-		J.add(bu1);
+		JButton bu4 = new JButton("Note"); // 각각 버튼생성
+		bu1.addActionListener(new Action()); //버튼에 리스너 부착
+		J.add(bu1); // JPanel에 버튼 부착
 		//bu1.setOpaque(true);
 		//bu1.setBackground(Color.ORANGE);
 		bu2.addActionListener(new Action());
@@ -40,11 +40,11 @@ public class StudentActivity extends JFrame{
 		J.add(bu3);
 		bu4.addActionListener(new Action());
 		J.add(bu4);
-		c.requestFocus();
-		c.add(J, BorderLayout.CENTER);
+		c.requestFocus(); 
+		c.add(J, BorderLayout.CENTER); // JPanel을 컨텐트팬에 부착
 
-	setSize(300,300);
-	setVisible(true);
+	setSize(300,300); //프레임 크기 300x300설정
+	setVisible(true); //프레임을 화면에 출력
 	}
 	public static void main(String args[]){
 		new Login();
@@ -56,14 +56,46 @@ class Eat extends JFrame{ //오늘 뭐 먹지 에 관한 내용
 		setTitle("What's Eat?");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		Container c = getContentPane();
-		c.setLayout(new FlowLayout());
+		Container c = getContentPane(); 
+		c.setLayout(new BorderLayout(5,5));
+		Item itemlistener = new Item();
 		
+		JPanel J1 = new JPanel(new GridLayout(5,5));
+		JPanel J2 = new JPanel(new GridLayout(5,5));
+		JPanel J3 = new JPanel(new GridLayout(5,5));//각각 JPanel을 선언
 		
+		JCheckBox[] pay = new JCheckBox[1]; //가격
+		String[] payname = {"a"}; //가격 이름 : 1천원대, 2천원대~
+		JCheckBox[] time = new JCheckBox[1]; //시간
+		String[] timename = {"b"}; //시간 이름: 5분, 10분~
+		JCheckBox[] food = new JCheckBox[1]; //음식
+		String[] foodname = {"c"}; //음식 이름: 국수, 밥~
 		
+		c.add(new JLabel("가격, 가는데 걸리는 시간(홍익대 D동기준), 음식 종류"), BorderLayout.NORTH);//문구
+		c.add(J1, BorderLayout.WEST);	
+		c.add(J2, BorderLayout.CENTER);	
+		c.add(J3, BorderLayout.EAST);	// 선언한 JPanel을 BorderLayout의 각 위치에 넣음
+			
+		for(int i=0;i<pay.length;i++){
+			pay[i]=new JCheckBox(payname[i]);//payname[]의 문자열로 체크박스생성
+			pay[i].setBorderPainted(true);//체크박스 외곽선이 보이도록 설정
+			J1.add(pay[i]);//컨텐트팬, JPanel에 체크박스 삽입
+			pay[i].addItemListener(itemlistener);//체크박스에 Item리스너 등록
+		}
+	
+		for(int i=0;i<time.length;i++){
+			time[i]=new JCheckBox(timename[i]);//timename[]의 문자열로 체크박스생성
+			time[i].setBorderPainted(true);//체크박스 외곽선이 보이도록 설정
+			J2.add(time[i]);//컨텐트팬, JPanel에 체크박스 삽입
+			time[i].addItemListener(itemlistener);//체크박스에 Item리스너 등록
+		}
 		
-		
-		
+		for(int i=0;i<food.length;i++){
+			food[i]=new JCheckBox(foodname[i]);//foodname[]의 문자열로 체크박스생성
+			food[i].setBorderPainted(true);//체크박스 외곽선이 보이도록 설정
+			J3.add(food[i]);//컨텐트팬, JPanel에 체크박스 삽입
+			food[i].addItemListener(itemlistener);//체크박스에 Item리스너 등록
+		}
 		
 		
 		
@@ -71,7 +103,7 @@ class Eat extends JFrame{ //오늘 뭐 먹지 에 관한 내용
 		
 		
 
-		setSize(300,300);
+		setSize(500,500);
 		setVisible(true);
 	}
 }
@@ -100,25 +132,25 @@ class Health extends JFrame{ // 자가진단에 관한 내용
 	}
 	
 }
-class FavoriteSite extends JFrame{ // 하이퍼링크는 구현불가, 의미 부여
-	JTextArea ta = new JTextArea(45,30);
-	JTextField tf = new JTextField(20);
+class FavoriteSite extends JFrame{ // 하이퍼링크는 구현불가, 의미 부여(자주 가는 사이트정보 열람)
+	JTextArea ta = new JTextArea(45,30); //줄, 길이로 구성된 노트와 같은 존재 선언
+	JTextField tf = new JTextField(20); //일자로 된 공간 선언
 	FavoriteSite(){
 		setTitle("FavoriteSite");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Container c = getContentPane();
 		c.setLayout(new BorderLayout(0,10));
 		c.add(new JLabel("입력 후 <Enter> 키를 입력하세요, 자동 저장됩니다. 입력시에 주의해서 입력하시오. ( 자주 가는 사이트 등록 후 어디였는지 조회 )"),BorderLayout.NORTH);
-		c.add(new JScrollPane(ta),BorderLayout.SOUTH);
+		c.add(new JScrollPane(ta),BorderLayout.SOUTH); //Area를 스크롤팬에 부착
 		c.add(tf,BorderLayout.CENTER);
 		String filename[] = {"Favorite0.txt","Favorite1.txt","Favorite2.txt","Favorite3.txt","Favorite4.txt",
 				"Favorite5.txt"	,"Favorite6.txt","Favorite7.txt","Favorite8.txt","Favorite9.txt","Favorite10.txt"
 				,"Favorite11.txt","Favorite12.txt","Favorite13.txt","Favorite14.txt","Favorite15.txt",
-				"Favorite16.txt","Favorite17.txt","Favorite18.txt","Favorite19.txt"}; // 캡슐화
+				"Favorite16.txt","Favorite17.txt","Favorite18.txt","Favorite19.txt"}; // 캡슐화 ~> 각 유저마다 저장 공간을 따로만듬
 		Check cc= new Check();
-		int l = cc.data();
+		int l = cc.data(); //만든 유저의 순서번호를 가져옴
 		 try {
-	    	  for(int ff=0;ff<filename.length;ff++){
+	    	  for(int ff=0;ff<filename.length;ff++){//파일생성
 	        	File f1 = new File(filename[ff]);
 	            f1.createNewFile();
 	            }
@@ -129,9 +161,9 @@ class FavoriteSite extends JFrame{ // 하이퍼링크는 구현불가, 의미 �
 			//FileOutputStream note = new FileOutputStream("note.txt");
 			FileReader note1 = new FileReader(filename[l]);
 			int c1;
-			while((c1=note1.read())!=-1){
+			while((c1=note1.read())!=-1){//파일 읽어오기
 				char ccc = (char)c1;
-				ta.append(Character.toString(ccc));
+				ta.append(Character.toString(ccc));//Area에 다시부착(정보 다시 가져오기)
 			}
 			//note.close();
 			note1.close();
@@ -146,9 +178,10 @@ class FavoriteSite extends JFrame{ // 하이퍼링크는 구현불가, 의미 �
 		tf.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e4){
 				JTextField t1 = (JTextField)e4.getSource();
-					ta.append(t1.getText()+"\n");
+					ta.append(t1.getText()+"\n");//textfield에 입력된 정보를 area에 저장
 					try {
-						FileOutputStream note = new FileOutputStream(filename[l],true);
+						FileOutputStream note = new FileOutputStream(filename[l],true);//입력 정보를 파일에 저장
+						
 						note.write((t1.getText()+"\n").getBytes());
 						note.close();
 					} catch (FileNotFoundException e) {
@@ -165,7 +198,7 @@ class FavoriteSite extends JFrame{ // 하이퍼링크는 구현불가, 의미 �
 		setVisible(true);
 	}
 }
-class Note extends JFrame{
+class Note extends JFrame{//낙서장, 메모장, 구현방식은 Favorite과 동일 . 하지만 추구하는 기능은 다름
 	JTextArea ta = new JTextArea(45,30);
 	JTextField tf = new JTextField(20);
 	Note(){
@@ -230,7 +263,7 @@ class Note extends JFrame{
 		setVisible(true);
 	}
 }
-class Login extends JFrame{
+class Login extends JFrame{ // Login하기 위한 클래스
 	Login(){
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -247,7 +280,7 @@ class Login extends JFrame{
 				JTextField t1 = (JTextField)e3.getSource();
 					Check c = new Check();
 					String shared = t1.getText();
-					c.check(shared);
+					c.check(shared);//입력한 정보를 비교해서 등록되어 있는 유저인지 확인
 				}
 		});
 		JButton but1 = new JButton("Add");
@@ -264,10 +297,10 @@ class Login extends JFrame{
 	}
 }
 class Check{
-	static private String dataidpw;
-	static private int k=0;
-	static private String[] IDPW = new String[100];
-	public int data(){
+	static private String dataidpw; // 로그인 할 때의 유저의 정보
+	static private int k=0; // index값
+	static private String[] IDPW = new String[100]; // 저장되는 유저의 정보
+	public int data(){ //어떤 유저가 이전 정보로 다시 로그인 했을 때 정보를 불러오기 위한 메소드
 		int num=0;
 		for(int i=0;i<100;i++){	
 			if(dataidpw.equals(IDPW[i])){
@@ -276,11 +309,11 @@ class Check{
 	}
 		return num;
 	}
-	public void add(String idpw){
+	public void add(String idpw){ // 정보추가
 		//System.out.print("data in\n");
 		IDPW[k++]=idpw;
 	}
-	public void delete(String idpw){
+	public void delete(String idpw){ // 정보삭제
 		int a;
 		for(a=0;a<k;a++){
 			if(idpw.equals(IDPW[a])){
@@ -288,7 +321,7 @@ class Check{
 			}
 		}
 	}
-	public void check(String idpw){
+	public void check(String idpw){ // 등록된 유저인지 확인하고 true면 studentActivity실행
 		dataidpw=idpw;
 		int i = 0;
 		for(i=0;i<100;i++){	
@@ -298,9 +331,9 @@ class Check{
 			}
 		}
 }
-class Action implements ActionListener{
+class Action implements ActionListener{ // StudentActivity, Check, Login을 위한 액션리스너
 	public void actionPerformed(ActionEvent e1) {
-		JButton b = (JButton)e1.getSource();
+		JButton b = (JButton)e1.getSource();//button의 입력값 받아와서 해당 정보가 true면 각 기능을 수행하게 함.
 		Check c = new Check();
 		if(b.getText().equals("What's Eat?")){
 			new Eat();
@@ -315,7 +348,7 @@ class Action implements ActionListener{
 			new Note();
 		}
 		else if(b.getText().equals("Add")){
-			String name=JOptionPane.showInputDialog("구조:ID, PassWord");
+			String name=JOptionPane.showInputDialog("구조:ID, PassWord"); //정보를 받을 수 있는 팝업창
 			if(name!=null){
 				c.add(name);
 			}
@@ -328,7 +361,7 @@ class Action implements ActionListener{
 		}
 	}
 }
-class Item implements ItemListener{
+class Item implements ItemListener{// Eat, Health 클래스를 위한 아이템 리스너
 	public void itemStateChanged(ItemEvent e2) {
 		if(e2.getStateChange()==ItemEvent.SELECTED){
 			
@@ -338,28 +371,28 @@ class Item implements ItemListener{
 		
 	}
 }
-class MenuListener implements ActionListener{
+class MenuListener implements ActionListener{ // 메뉴를 위한 리스너
 
 	public void actionPerformed(ActionEvent e) {
-	String A = e.getActionCommand();
+	String A = e.getActionCommand(); //커맨드 값을 가져옴
 	switch(A){
-	case "Favorite Data":
+	case "Favorite Data": //메뉴 Favorite Data를 눌럿을 경우
 		Check cFavor= new Check();
-		int favor = cFavor.data();
-		String favordata = "Favorite"+favor+".txt";
-		System.out.println(favordata);
+		int favor = cFavor.data();//현재 유저의 정보를 가져옴
+		String favordata = "Favorite"+favor+".txt";//해당 유저가 쓰고 있는 저장공간의 정보
+		//System.out.println(favordata);
 		File favorfile = new File(favordata);
-		if(favorfile.isFile()){
-			favorfile.delete();
+		if(favorfile.isFile()){//file이 존재한다면 삭제
+			favorfile.delete();//삭제
 		}
 		 File f1 = new File(favordata);
 	        try {
-	            f1.createNewFile();
+	            f1.createNewFile();// 다시 생성 ~~> 삭제 후 내용이 없는 파일로 다시 생성, 즉 초기화 구현
 	        } catch (IOException e1) {
 	            e1.printStackTrace();
 	        }
 		break;
-	case "Note Data":
+	case "Note Data"://메뉴Note Data를 눌럿을 경우, 밑은 구현 방식 동일
 		Check cNote= new Check();
 		int fnote = cNote.data();
 		String fnotedata = "note"+fnote+".txt";
