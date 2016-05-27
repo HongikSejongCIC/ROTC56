@@ -81,7 +81,11 @@ class Eat extends JFrame{ //오늘 뭐 먹지 에 관한 내용
 		ButtonGroup g3 = new ButtonGroup();
 		
 		for(int i=0;i<pay.length;i++){
-			pay[i]=new JCheckBox(payname[i]);//payname[]의 문자열로 체크박스생성
+			if(i==0){
+			pay[i]=new JCheckBox(payname[i],true);
+			}else{
+				pay[i]=new JCheckBox(payname[i]);//payname[]의 문자열로 체크박스생성
+			}
 			pay[i].setBorderPainted(true);//체크박스 외곽선이 보이도록 설정
 			J1.add(pay[i]);//컨텐트팬, JPanel에 체크박스 삽입
 			pay[i].addItemListener(itemlistener);//체크박스에 Item리스너 등록
@@ -89,7 +93,12 @@ class Eat extends JFrame{ //오늘 뭐 먹지 에 관한 내용
 		}
 	
 		for(int i=0;i<time.length;i++){
-			time[i]=new JCheckBox(timename[i]);//timename[]의 문자열로 체크박스생성
+			if(i==0){
+			time[i]=new JCheckBox(timename[i],true);
+			}
+			else{
+				time[i]=new JCheckBox(timename[i]);//timename[]의 문자열로 체크박스생성
+			}
 			time[i].setBorderPainted(true);//체크박스 외곽선이 보이도록 설정
 			J3.add(time[i]);//컨텐트팬, JPanel에 체크박스 삽입
 			time[i].addItemListener(itemlistener);//체크박스에 Item리스너 등록
@@ -97,7 +106,12 @@ class Eat extends JFrame{ //오늘 뭐 먹지 에 관한 내용
 		}
 		
 		for(int i=0;i<food.length;i++){
-			food[i]=new JCheckBox(foodname[i]);//foodname[]의 문자열로 체크박스생성
+			if(i==0){
+			food[i]=new JCheckBox(foodname[i],true);
+			}
+			else{
+				food[i]=new JCheckBox(foodname[i]);//foodname[]의 문자열로 체크박스생성
+			}
 			food[i].setBorderPainted(true);//체크박스 외곽선이 보이도록 설정
 			J2.add(food[i]);//컨텐트팬, JPanel에 체크박스 삽입
 			food[i].addItemListener(itemlistener);//체크박스에 Item리스너 등록
@@ -387,7 +401,7 @@ class Eat extends JFrame{ //오늘 뭐 먹지 에 관한 내용
 				}
 			}
 			else{
-				System.out.print("시발");
+				System.out.print("오류");
 			sel="조회 정보 없음27";}
 			select.setText(sel);
 			
