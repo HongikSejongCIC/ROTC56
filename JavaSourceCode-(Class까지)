@@ -64,12 +64,12 @@ class Eat extends JFrame{ //오늘 뭐 먹지 에 관한 내용
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		Container c = getContentPane(); 
-		c.setLayout(new BorderLayout(5,5));
+		c.setLayout(new BorderLayout(30,5));
 		Item itemlistener = new Item();
 		
-		JPanel J1 = new JPanel(new GridLayout(5,5));
-		JPanel J2 = new JPanel(new FlowLayout());
-		JPanel J3 = new JPanel(new GridLayout(5,5));//각각 JPanel을 선언
+		JPanel J1 = new JPanel(new GridLayout(3,1));
+		JPanel J2 = new JPanel(new GridLayout(6,2,10,0));
+		JPanel J3 = new JPanel(new GridLayout(4,1));//각각 JPanel을 선언
 		
 		c.add(new JLabel("가격, 가는데 걸리는 시간(홍익대 D동기준), 음식 종류(커피 선택시 거리만 체크), 음식->가격->시간 순으로 선택"), BorderLayout.NORTH);//문구
 		c.add(J1, BorderLayout.WEST);	
@@ -81,59 +81,91 @@ class Eat extends JFrame{ //오늘 뭐 먹지 에 관한 내용
 		ButtonGroup g3 = new ButtonGroup();
 		
 		for(int i=0;i<pay.length;i++){
-			if(i==0){
-			pay[i]=new JCheckBox(payname[i],true);
-			}else{
-				pay[i]=new JCheckBox(payname[i]);//payname[]의 문자열로 체크박스생성
-			}
+			pay[i]=new JCheckBox(payname[i]);//payname[]의 문자열로 체크박스생성
 			pay[i].setBorderPainted(true);//체크박스 외곽선이 보이도록 설정
 			J1.add(pay[i]);//컨텐트팬, JPanel에 체크박스 삽입
 			pay[i].addItemListener(itemlistener);//체크박스에 Item리스너 등록
 			g1.add(pay[i]);//그룹핑
 		}
-	
+		//pay[3]=new JCheckBox(payname[3],true);//payname[]의 문자열로 체크박스생성
+		//g1.add(pay[3]);
 		for(int i=0;i<time.length;i++){
-			if(i==0){
-			time[i]=new JCheckBox(timename[i],true);
-			}
-			else{
-				time[i]=new JCheckBox(timename[i]);//timename[]의 문자열로 체크박스생성
-			}
+			time[i]=new JCheckBox(timename[i]);//timename[]의 문자열로 체크박스생성
 			time[i].setBorderPainted(true);//체크박스 외곽선이 보이도록 설정
 			J3.add(time[i]);//컨텐트팬, JPanel에 체크박스 삽입
 			time[i].addItemListener(itemlistener);//체크박스에 Item리스너 등록
 			g3.add(time[i]);//그룹핑
 		}
-		
+		//time[4]=new JCheckBox(timename[4],true);
+		//g3.add(time[4]);
 		for(int i=0;i<food.length;i++){
-			if(i==0){
-			food[i]=new JCheckBox(foodname[i],true);
-			}
-			else{
-				food[i]=new JCheckBox(foodname[i]);//foodname[]의 문자열로 체크박스생성
-			}
+			food[i]=new JCheckBox(foodname[i]);//foodname[]의 문자열로 체크박스생성
 			food[i].setBorderPainted(true);//체크박스 외곽선이 보이도록 설정
 			J2.add(food[i]);//컨텐트팬, JPanel에 체크박스 삽입
 			food[i].addItemListener(itemlistener);//체크박스에 Item리스너 등록
 			g2.add(food[i]);//그룹핑
 		}
+		//food[12] = new JCheckBox(foodname[12],true);
+		//g2.add(food[12]);
 		select = new JLabel("어떤 것을 먹을지에 관한 정보가 나옵니다.");
 		c.add(select,BorderLayout.SOUTH);
-		setSize(500,1000);
+		setSize(1000,600);
 		setVisible(true);
 	}
 	class Item implements ItemListener{// Eat, Health 클래스를 위한 아이템 리스너
 		public void itemStateChanged(ItemEvent e2) {
-			String sel;
-			/*if(e2.getItem()==food[0]){
-				sel="8천원 이하 -> 5분 이내: 감미옥 삼억감자탕 한우타운 , 10분 이내: 병천순대국, 15분 이내 수육국밥, 대학순대, 굴이야기";
+			String sel = null;
+			if(e2.getItem()==food[0]){//국밥
+				sel="8천원 이하 -> 5분 이내: 감미옥 삼억감자탕 한우타운, 10분 이내: 병천순대국, 15분 이내: 수육국밥, 대학순대, 굴이야기";
+			}
+			else if(e2.getItem()==food[1]){//중국집
+				sel="8천원 이하 -> 7분 이내: 황비홍, 10분 이내: 흑룡강, 15분 이내: 홍굴이, 메밀꽃 필 무렵";
+			}
+			else if(e2.getItem()==food[2]){//도시락
+				sel="4천원 이하 -> 5분 이내: 봉구스밥버거, 10분 이내: 한솥, 15분 이내: 컵밥";
+			}
+			else if(e2.getItem()==food[3]){//덮밥
+				sel="8천원 이하 -> 5분 이내: 한우타운, 10분 이내: 마루";
+			}
+			else if(e2.getItem()==food[4]){//버거
+				sel="4천원 이하 -> 7분 이내: 짱버거, 토스트하우스"+"\n"+"8천원 이하 -> 10분 이내: 맘스터치, 치즈버거";
+			}
+			else if(e2.getItem()==food[5]){//치킨
+				sel="1만원 이상 -> 7분 이내: 옛날 통닭, 10분 이내: 맘스터치, 또래오래, 아프리카, 15분 이내: 강호동치킨, BBQ";
+			}
+			else if(e2.getItem()==food[6]){//고기
+				sel="8천원 이하 -> 7분 이내: 서라벌, 15분 이내: 육앤샤, 캠핑쿡, 구이가"+"\n"+"1만원 이상 -> 7분 이내: 뒷고기, 돈돌이"
+						+ ", 10분 이내: 춤추는 닭갈비, 원미닭갈비, You&I막창, 국민닭갈비"
+						+", 15분 이내: 별산삼겹살, 손문, 거송, 닭포, 닭갈비&부대찌개";
+			}
+			else if(e2.getItem()==food[7]){//한식
+				sel="8천원 이하 -> 5분 이내: 보현식당, 홍대식당 , 7분 이내: 김밥천국, 먹자집, "
+						+ "10분 이내: 형태네, 한식뷔페, 15분 이내: 닭갈비&부대찌개"+"\n"+"1만원 이상 -> 7분 이내: 홍대파전";
+			}
+			else if(e2.getItem()==food[8]){//국수
+				sel="8천원 이하 -> 7분 이내: 서라벌, 김밥천국,  10분 이내: 산초메";
+			}
+			else if(e2.getItem()==food[9]){//떡튀순
+				sel="4천원 이하 -> 7분 이내: 매콤달콤, 10분 이내: 청년국물 떡볶이"
+			+"\n"+"8천원 이하 -> 10분 이내: 작은 공간"+"\n"+"1만원 이상 -> 10분 이내: 신안골";
+			}
+			else if(e2.getItem()==food[10]){//피자
+				sel="1만원 이상 -> 10분 이내: 또래오래";
+			}
+			else if(e2.getItem()==food[11]){//카페
+				sel="5분 이내: 학관리앙, B동리앙, knock"+"\n"+"7분 이내: 요거프레소, 달콤한 청춘"+"\n"+"10분 이내: 킴스커피, 카페멜론"
+			+", 세컨드로드, 두남자, 미스티 블루"+"\n"+"15분 이내: 단콩, 홍카페";
 			}
 			else if(e2.getItem()==pay[0]){
 				sel="7분 이내 ~> 버거: 짱버거, 토스트하우스, 떡튀순: 매콤달콤 "+"\n"+"10분 이내~> 떡튀순: 청년국물떡볶이";
 			}
 			else if(e2.getItem()==time[0]){
 				//sel="국밥 ~> 8천원 이내: 감미옥, 삼억감자탕, 한우타운"+"\n"+"중국집 ~> 8천원 이내: 황비홍"
-			}*/
+			}
+			else{
+				
+			}
+			/*
 			if(e2.getStateChange()==ItemEvent.SELECTED){
 				if(e2.getItem()==food[0]){
 					if(e2.getItem()==pay[1]){
@@ -402,7 +434,7 @@ class Eat extends JFrame{ //오늘 뭐 먹지 에 관한 내용
 			}
 			else{
 				System.out.print("오류");
-			sel="조회 정보 없음27";}
+			sel="조회 정보 없음27";}*/
 			select.setText(sel);
 			
 			
