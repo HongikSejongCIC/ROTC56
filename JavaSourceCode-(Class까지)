@@ -211,7 +211,8 @@ class Eat extends JFrame{ //오늘 뭐 먹지 에 관한 내용
 				taa.append(sel+"\n"+"\n");
 				
 			}
-			/*
+			/*//Label을 통해 구현한 건데 다 표시가 되지 않음. + default를 설정해도 제대로 인식되지 않음
+			 //동시에 다 체크되있음을 인식해야되는데 그게 정상적으로 작동되지 않음.
 			if(e2.getStateChange()==ItemEvent.SELECTED){
 				if(e2.getItem()==food[0]){
 					if(e2.getItem()==pay[1]){
@@ -487,7 +488,7 @@ class Eat extends JFrame{ //오늘 뭐 먹지 에 관한 내용
 		}
 	}
 }
-/*class Health extends JFrame{ // 자가진단에 관한 내용
+/*class Health extends JFrame{ // 자가진단에 관한 내용~> 문제가 있어 잘 실행되지 않는 클래스
 	JCheckBox[] illness = new JCheckBox[17]; //가격
 	String[] name = {"구토를 한다","발열증세가 있다","복통이 있다","배변장애가 있다(설사, 장 경련)","두통 및 현기증이 있다","몸이 덜덜 떨린다",
 			"누렇고 끈적이는 콧물이 흐른다","피로감, 무기력함이 있다","호흡을 하는데 어려움이 있다","목에 무언가 걸려있는 느낌이 있다","음식을 삼키기 힘들다","식욕이 없다",
@@ -632,7 +633,7 @@ class Health extends JFrame{
 							}
 							
 							else if(result6==JOptionPane.NO_OPTION){
-								JOptionPane.showMessageDialog(null,"목감기일 가능성이 높습니다.","결과",JOptionPane.WARNING_MESSAGE);
+								JOptionPane.showMessageDialog(null,"병원에 가서 진찰을 받으십시오.","결과",JOptionPane.WARNING_MESSAGE);
 							}
 			
 						}
