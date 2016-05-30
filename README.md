@@ -18,10 +18,14 @@ ROTC 56
 
 •기능
 
-•What's Eat? ◦checkbox라는 GUI기능을 이용하여 해당 체크박스들이 선택됐을 때 값을 출력하도록 한다. (ex: (5분거리, 10분거리...), (4천원 이내, 8천원 이내...), (국수, 밥.....) )
+•What's Eat? 
+◦checkbox라는 GUI기능을 이용하여 해당 체크박스들이 선택됐을 때 값을 출력하도록 한다. (ex: (5분거리, 10분거리...), (4천원 이내, 8천원 이내...), (국수, 밥.....) )
 
-•My Health? ◦JOptionPane이라는 GUI기능을 이용하여 상태를 진단하도록 한다. (ex: 몸이 으슬으슬하다, 인후통이 있다.... )
+•My Health? 
+◦JOptionPane이라는 GUI기능을 이용하여 상태를 진단하도록 한다. (ex: 몸이 으슬으슬하다, 인후통이 있다.... )
 
-•Favorite Site! ◦TextArea 같은 기능을 이용하여 만든다.
+•Favorite Site! 
+◦TextArea 같은 기능을 이용하여 만든다.
 
-•Note ◦TextArea 같은 기능을 이용하여 만든다.
+•Note 
+◦TextArea 같은 기능을 이용하여 만든다.
