@@ -1,0 +1,921 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import javax.swing.*;
+
+public class StudentActivity extends JFrame{
+	StudentActivity(){
+		setTitle("Student Chart"); //해당 화면의 제목
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); ~> x 누르면 프로그램이 종료됨.
+		
+		Container c = getContentPane(); //컨텐트팬 알아내기
+		c.setLayout(new BorderLayout()); // 배치관리자 설정
+		JPanel J = new JPanel(new GridLayout(2,2,5,5));
+		
+		MenuListener mm = new MenuListener();
+		JMenuBar mbar=new JMenuBar(); // MenuBar 생성
+		
+		JMenu menu=new JMenu("Delete Data"); // Menu 생성
+		mbar.add(menu);
+		
+		JMenuItem men1= new JMenuItem("Favorite Data"); // 메뉴아이템 생성
+		menu.add(men1); // 메뉴아이템을 메뉴에 연결
+		men1.addActionListener(mm); // ItemListener를 부착하여 해당 기능 실행하도록 만듬
+		JMenuItem men2= new JMenuItem("Note Data");
+		menu.add(men2);
+		men2.addActionListener(mm);
+		setJMenuBar(mbar); // 메뉴바를 프레임에 부착
+		
+		JButton bu1 = new JButton("What's Eat?"); 
+		JButton bu2 = new JButton("My Health?");
+		JButton bu3 = new JButton("Favorite Site");
+		JButton bu4 = new JButton("Note"); // 각각 버튼생성
+		bu1.addActionListener(new Action()); //버튼에 리스너 부착
+		J.add(bu1); // JPanel에 버튼 부착
+		//bu1.setOpaque(true);
+		//bu1.setBackground(Color.ORANGE);
+		bu2.addActionListener(new Action());
+		J.add(bu2);
+		bu3.addActionListener(new Action());
+		J.add(bu3);
+		bu4.addActionListener(new Action());
+		J.add(bu4);
+		c.requestFocus(); 
+		c.add(J, BorderLayout.CENTER); // JPanel을 컨텐트팬에 부착
+
+	setSize(300,300); //프레임 크기 300x300설정
+	setVisible(true); //프레임을 화면에 출력
+	}
+	public static void main(String args[]){
+		new Login();
+	}
+}
+
+class Eat extends JFrame{ //오늘 뭐 먹지 에 관한 내용
+	JCheckBox[] pay = new JCheckBox[3]; //가격
+	String[] payname = {"4천원 이내","8천원 이내","1만원 이상"}; //가격 이름 : 1천원대, 2천원대~
+	JCheckBox[] time = new JCheckBox[4]; //시간
+	String[] timename = {"5분 이내", "7분 이내", "10분 이내", "15분 이내"}; //시간 이름: 5분, 10분~
+	JCheckBox[] food = new JCheckBox[12]; //음식
+	String[] foodname = {"국밥","중국집","도시락","덮밥","버거","치킨","고기","한식","국수","떡튀순","피자","카페"}; //음식 이름: 국수, 밥~
+	//JLabel select;
+	TextArea taa = new TextArea(20,20);
+	Eat(){
+		setTitle("What's Eat?");
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		Container c = getContentPane(); 
+		c.setLayout(new BorderLayout(30,5));
+		Item itemlistener = new Item();
+		
+		JPanel J1 = new JPanel(new GridLayout(3,1));
+		JPanel J2 = new JPanel(new GridLayout(6,2,10,0));
+		JPanel J3 = new JPanel(new GridLayout(4,1));//각각 JPanel을 선언
+		JPanel J4 = new JPanel(new FlowLayout());//TextArea를 위한 것
+		
+		c.add(new JLabel("가격                               음식 종류                                                                  "
+				+ "                                       "
+				+ "                                       "
+				+ "                                       "
+				+ "                    가는데 걸리는 시간(홍익대 D동기준)"), BorderLayout.NORTH);//문구
+		c.add(J1, BorderLayout.WEST);	
+		c.add(J2, BorderLayout.CENTER);	
+		c.add(J3, BorderLayout.EAST);	// 선언한 JPanel을 BorderLayout의 각 위치에 넣음
+		
+		ButtonGroup g1 = new ButtonGroup();
+		ButtonGroup g2 = new ButtonGroup();
+		ButtonGroup g3 = new ButtonGroup();
+		
+		for(int i=0;i<pay.length;i++){
+			pay[i]=new JCheckBox(payname[i]);//payname[]의 문자열로 체크박스생성
+			pay[i].setBorderPainted(true);//체크박스 외곽선이 보이도록 설정
+			J1.add(pay[i]);//컨텐트팬, JPanel에 체크박스 삽입
+			pay[i].addItemListener(itemlistener);//체크박스에 Item리스너 등록
+			g1.add(pay[i]);//그룹핑
+		}
+		//pay[3]=new JCheckBox(payname[3],true);//payname[]의 문자열로 체크박스생성
+		//g1.add(pay[3]);
+		for(int i=0;i<time.length;i++){
+			time[i]=new JCheckBox(timename[i]);//timename[]의 문자열로 체크박스생성
+			time[i].setBorderPainted(true);//체크박스 외곽선이 보이도록 설정
+			J3.add(time[i]);//컨텐트팬, JPanel에 체크박스 삽입
+			time[i].addItemListener(itemlistener);//체크박스에 Item리스너 등록
+			g3.add(time[i]);//그룹핑
+		}
+		//time[4]=new JCheckBox(timename[4],true);
+		//g3.add(time[4]);
+		for(int i=0;i<food.length;i++){
+			food[i]=new JCheckBox(foodname[i]);//foodname[]의 문자열로 체크박스생성
+			food[i].setBorderPainted(true);//체크박스 외곽선이 보이도록 설정
+			J2.add(food[i]);//컨텐트팬, JPanel에 체크박스 삽입
+			food[i].addItemListener(itemlistener);//체크박스에 Item리스너 등록
+			g2.add(food[i]);//그룹핑
+		}
+		//food[12] = new JCheckBox(foodname[12],true);
+		//g2.add(food[12]);
+		c.add(new JScrollPane(taa),BorderLayout.SOUTH); //Area를 스크롤팬에 부착
+		//select = new JLabel("어떤 것을 먹을지에 관한 정보가 나옵니다.");
+		//c.add(select,BorderLayout.SOUTH);
+		setSize(1000,600);
+		setVisible(true);
+	}
+	class Item implements ItemListener{// Eat클래스를 위한 아이템 리스너
+		public void itemStateChanged(ItemEvent e2) {
+			String sel = null;
+			if(e2.getItem()==food[0]){//국밥
+				sel="8천원 이하 -> 5분 이내: 감미옥 삼억감자탕 한우타운, 10분 이내: 병천순대국, 15분 이내: 수육국밥, 대학순대, 굴이야기";
+				taa.append("국밥:"+"\n"+sel+"\n"+"\n");
+			}
+			else if(e2.getItem()==food[1]){//중국집
+				sel="8천원 이하 -> 7분 이내: 황비홍, 10분 이내: 흑룡강, 15분 이내: 홍굴이, 메밀꽃 필 무렵";
+				taa.append("중국집:"+"\n"+sel+"\n"+"\n");
+			}
+			else if(e2.getItem()==food[2]){//도시락
+				sel="4천원 이하 -> 5분 이내: 봉구스밥버거, 10분 이내: 한솥, 15분 이내: 컵밥";
+				taa.append("도시락:"+"\n"+sel+"\n"+"\n");
+			}
+			else if(e2.getItem()==food[3]){//덮밥
+				sel="8천원 이하 -> 5분 이내: 한우타운, 10분 이내: 마루";
+				taa.append("덮밥:"+"\n"+sel+"\n"+"\n");
+			}
+			else if(e2.getItem()==food[4]){//버거
+				sel="4천원 이하 -> 7분 이내: 짱버거, 토스트하우스"+"\n"+"8천원 이하 -> 10분 이내: 맘스터치, 치즈버거";
+				taa.append("버거:"+"\n"+sel+"\n"+"\n");
+			}
+			else if(e2.getItem()==food[5]){//치킨
+				sel="1만원 이상 -> 7분 이내: 옛날 통닭, 10분 이내: 맘스터치, 또래오래, 아프리카, 15분 이내: 강호동치킨, BBQ";
+				taa.append("치킨:"+"\n"+sel+"\n"+"\n");
+			}
+			else if(e2.getItem()==food[6]){//고기
+				sel="8천원 이하 -> 7분 이내: 서라벌, 15분 이내: 육앤샤, 캠핑쿡, 구이가"+"\n"+"1만원 이상 -> 7분 이내: 뒷고기, 돈돌이"
+						+ ", 10분 이내: 춤추는 닭갈비, 원미닭갈비, You&I막창, 국민닭갈비"
+						+", 15분 이내: 별산삼겹살, 손문, 거송, 닭포, 닭갈비&부대찌개";
+				taa.append("고기:"+"\n"+sel+"\n"+"\n");
+			}
+			else if(e2.getItem()==food[7]){//한식
+				sel="8천원 이하 -> 5분 이내: 보현식당, 홍대식당 , 7분 이내: 김밥천국, 먹자집, "
+						+ "10분 이내: 형태네, 한식뷔페, 15분 이내: 닭갈비&부대찌개"+"\n"+"1만원 이상 -> 7분 이내: 홍대파전";
+				taa.append("한식:"+"\n"+sel+"\n"+"\n");
+			}
+			else if(e2.getItem()==food[8]){//국수
+				sel="8천원 이하 -> 7분 이내: 서라벌, 김밥천국,  10분 이내: 산초메";
+				taa.append("국수:"+"\n"+sel+"\n"+"\n");
+			}
+			else if(e2.getItem()==food[9]){//떡튀순
+				sel="4천원 이하 -> 7분 이내: 매콤달콤, 10분 이내: 청년국물 떡볶이"
+			+"\n"+"8천원 이하 -> 10분 이내: 작은 공간"+"\n"+"1만원 이상 -> 10분 이내: 신안골";
+				taa.append("떡튀순:"+"\n"+sel+"\n"+"\n");
+			}
+			else if(e2.getItem()==food[10]){//피자
+				sel="1만원 이상 -> 10분 이내: 또래오래";
+				taa.append("피자:"+"\n"+sel+"\n"+"\n");
+			}
+			else if(e2.getItem()==food[11]){//카페
+				sel="5분 이내: 학관리앙, B동리앙, knock"+"\n"+"7분 이내: 요거프레소, 달콤한 청춘"+"\n"+"10분 이내: 킴스커피, 카페멜론"
+			+", 세컨드로드, 두남자, 미스티 블루"+"\n"+"15분 이내: 단콩, 홍카페";
+				taa.append("카페:"+"\n"+sel+"\n"+"\n");
+			}
+			else if(e2.getItem()==pay[0]){
+	            sel="7분 이내 -> 버거: 짱버거, 토스트하우스, 떡튀순: 매콤달콤 "+"\n"+"10분 이내-> 떡튀순: 청년국물떡볶이";
+	            taa.append("4천원 이하:"+"\n"+sel+"\n"+"\n");
+	         }
+			else if(e2.getItem()==pay[1]){
+				sel="5분 이내-> 국밥: 감미옥 삼억감자탕 한우타운, 중국집: 황비홍, 덮밥: 한우타운, 한식: 보현식당 홍대식당"+"\n"+"7분 이내-> 고기: 서라벌, 한식: 김밥천국 먹자집, 국수: 서라벌 김밥천국"+"\n"+"10분 이내-> 국밥: 병천순대국, 중국집: 흑룡강, 덮밥: 마루, 버거: 맘스터치 치즈버거, 한식: 형태네 한식뷔페, 국수: 산초메, 떡튀순: 작은공간"+"\n"+"15분 이내-> 국밥: 수육국밥 대학순대 굴이야기, 중국집: 홍굴이 메밀꽃 필 무렵, 고기: 구이가 캠핑쿡 육앤샤, 한식: 닭갈비&부대찌개";
+				taa.append("8천원 이하:"+"\n"+sel+"\n"+"\n");
+			}
+			else if(e2.getItem()==pay[2]){
+				sel="7분 이내-> 옛날통닭, 고기: 뒷고기 돈돌이, 한식: 홍대파전"+"\n"+"10분 이내-> 치킨: 맘스터치 또래오래 아프리카, 고기: 춤추는닭갈비 원미닭갈비 You&I막창 국민닭갈비, 떡튀순: 신안굴, 피자: 또래오래"+"\n"+"15분 이내-> 치킨: 강호동치킨 BBQ, 고기: 별산삼겹살 손문 거송 닭포 닭갈비&부대찌개";
+				taa.append("1만원 이상:"+"\n"+sel+"\n"+"\n");
+			}
+			else if(e2.getItem()==time[0]){ 
+				   sel="국밥 -> 8천원 이하: 감미옥, 삼억감자탕, 한우타운"+"\n"+"중국집 -> 8천원 이하: 황비홍"+"\n"+"덮밥 -> 8천원 이하: 한우타운"+
+			"\n"+"한식 -> 8천원 이하: 보현식당, 홍대식당";
+				   taa.append("5분 이내:"+"\n"+sel+"\n"+"\n");
+			}
+			else if(e2.getItem()==time[1]){ 
+				   sel="도시락 -> 4천원 이하: 봉구스 밥버거"+"\n 버거 -> 4천원 이하: 짱버거, 토스트하우스\n"+"치킨 -> 1만원 이상: 옛날통닭\n"+"고기 -> 8천원 이하: 서라벌, 1만원 이상: 뒷고기, 돈돌이"
+				   		+ "한식 -> 8천원 이하: 김밥천국, 먹자집, 1만원 이상: 홍대파전\n"+"국수 -> 8천원 이하: 서라벌, 김밥천국\n"+"떡튀순 -> 4천원 이하: 매콤달콤";
+				   taa.append("7분 이내:"+"\n"+sel+"\n"+"\n");
+			}
+			else if(e2.getItem()==time[2]){ 
+				   sel="국밥 -> 8천원이하: 병천순대국"+ "/n" + "중국집 -> 8천원 이하 : 흑룡강"  +"/n" + "도시락 -> 4천원 이하: 한솥 도시락" + "/n" + "덮밥 -> 8천원 이하: 마루\n"+"버거 -> 8천원 이하: 맘스터치"+"\n"+"치킨 -> 1만원 이상: 맘스터치, 또래오래, 아프리카"+
+			"고기 -> 1만원 이상: 춤추는닭갈비, 원미닭갈비, Y&I막창, 국민닭갈비\n"+"한식 -> 8찬원 이하: 형태네, 한식뷔페\n"+"국수 -> 8천원 이하: 산초메\n"+"떡튀순 -> 4천원 이하: 청년국물떡볶이"+"\n"+"피자 -> 1만원 이상: 또래오래";   
+				   taa.append("10분 이내:"+"\n"+sel+"\n"+"\n");
+			}
+			else if(e2.getItem()==time[3]){
+				   sel="국밥 -> 8천원 이하 : 수육국밥, 대학순대, 굴이야기" + "/n" + "중국집 -> 8천원 이하: 홍굴이, 메밀꽃 필 무렵" +"도시락 -> 4천원 이하 : 컵밥\n"+"치킨 -> 1만원 이상: 강호동치킨, BBQ"+"\n"+"고기 -> 8천원 이내: 구이가, 캠핑쿡, 육앤샤, 1만원 이상: 별산삼겹살, 손문, 거송, 닭포, 닭갈비&부대찌개\n"+"한식 -> 8천원 이내: 닭갈비&부대찌개";
+				   taa.append("15분 이내:"+"\n"+sel+"\n"+"\n");
+			}
+			else{
+				sel="조회 정보가 없습니다. 배달시키는 방법도 있습니다.";
+				taa.append(sel+"\n"+"\n");
+				
+			}
+			/*//Label을 통해 구현한 건데 다 표시가 되지 않음. + default를 설정해도 제대로 인식되지 않음
+			 //동시에 다 체크되있음을 인식해야되는데 그게 정상적으로 작동되지 않음.
+			if(e2.getStateChange()==ItemEvent.SELECTED){
+				if(e2.getItem()==food[0]){
+					if(e2.getItem()==pay[1]){
+						if(e2.getItem()==time[0]){
+							sel="감미옥, 삼억감자탕, 한우타운";
+							System.out.print("시발");
+						}
+						else if(e2.getItem()==time[2]){
+							sel="병천순대국";
+						}
+						else if(e2.getItem()==time[3]){
+							sel="수육국밥, 대학순대, 굴이야기";
+						}
+						else{
+							sel="조회 정보 없음1";
+						}
+						
+					}
+					else{
+						sel="조회 정보 없음2";
+					}
+				}
+				else if(e2.getItem()==food[1]){
+					if(e2.getItem()==pay[1]){
+						if(e2.getItem()==time[0]){
+							sel="황비홍";
+						}
+						else if(e2.getItem()==time[2]){
+							sel="흑룡강";
+						}
+						else if(e2.getItem()==time[3]){
+							sel="홍굴이, 메밀꽃 필 무렵";
+						}
+						else{
+							sel="조회 정보 없음3";
+						}
+						
+					}
+					else{
+						sel="조회 정보 없음4";
+					}
+					
+				}
+				else if(e2.getItem()==food[2]){
+					if(e2.getItem()==pay[0]){
+						if(e2.getItem()==time[1]){
+							sel="봉구스밥버거";
+						}
+						else if(e2.getItem()==time[2]){
+							sel="한솥";
+						}
+						else if(e2.getItem()==time[3]){
+							sel="컵밥";
+						}
+						else{
+							sel="조회 정보 없음5";
+						}
+						
+					}
+					else{
+						sel="조회 정보 없음6";
+					}
+					
+				}
+				else if(e2.getItem()==food[3]){
+					if(e2.getItem()==pay[1]){
+						if(e2.getItem()==time[0]){
+							sel="한우타운";
+						}
+						else if(e2.getItem()==time[2]){
+							sel="마루";
+						}
+						else{
+							sel="조회 정보 없음7";
+						}
+						
+					}
+					else{
+						sel="조회 정보 없음8";
+					}
+	
+				}
+				else if(e2.getItem()==food[4]){
+					if(e2.getItem()==pay[0]){
+						if(e2.getItem()==time[1]){
+							sel="짱버거, 토스트하우스";
+						}
+						else{
+							sel="조회 정보 없음9";
+						}
+						
+					}
+					else if(e2.getItem()==pay[1]){
+						if(e2.getItem()==time[2]){
+							sel="맘스터치, 치즈버거";
+						}
+						else{
+							sel="조회 정보 없음10";
+						}
+						
+					}
+					else{
+						sel="조회 정보 없음11";
+					}
+	
+				}
+				else if(e2.getItem()==food[5]){
+					if(e2.getItem()==pay[2]){
+						if(e2.getItem()==time[1]){
+							sel="옛날 통닭";
+						}
+						else if(e2.getItem()==time[2]){
+							sel="맘스터치, 또래오래, 아프리카";
+						}
+						else if(e2.getItem()==time[3]){
+							sel="강호동치킨, BBQ";
+						}
+						else{
+							sel="조회 정보 없음12";
+						}
+						
+					}
+					else{
+						sel="조회 정보 없음13";
+					}
+				}
+				else if(e2.getItem()==food[6]){
+					if(e2.getItem()==pay[1]){
+						if(e2.getItem()==time[1]){
+							sel="서라벌";
+						}
+						else if(e2.getItem()==time[3]){
+							sel="구이가, 캠핑쿡, 육앤샤";
+						}
+						else{
+							sel="조회 정보 없음14";
+						}
+						
+					}
+					else if(e2.getItem()==pay[2]){
+						if(e2.getItem()==time[1]){
+							sel="뒷고기, 돈돌이";
+						}
+						else if(e2.getItem()==time[2]){
+							sel="춤추는 닭갈비, 원미 닭갈비, You&I막창, 국민 닭갈비";
+						}
+						else if(e2.getItem()==time[3]){
+							sel="별산삼겹살, 손문, 거송, 닭포, 닭갈비&부대찌개";
+						}
+						else{
+							sel="조회 정보 없음15";
+						}
+						
+					}
+					else{
+						sel="조회 정보 없음16";
+					}
+				}
+				else if(e2.getItem()==food[7]){
+					if(e2.getItem()==pay[1]){
+						if(e2.getItem()==time[0]){
+							sel="보현식당, 홍대식당";
+						}
+						else if(e2.getItem()==time[1]){
+							sel="김밥천국, 먹자집";
+						}
+						else if(e2.getItem()==time[2]){
+							sel="형태네, 한식뷔페";
+						}
+						else{
+							sel="닭갈비&부대찌개";
+						}
+						
+					}
+					else if(e2.getItem()==pay[2]){
+						if(e2.getItem()==time[1]){
+							sel="홍대파전";
+						}
+						else{
+							sel="조회 정보 없음17";
+						}
+						
+					}
+					else{
+						sel="조회 정보 없음18";
+					}
+					
+				}
+				else if(e2.getItem()==food[8]){
+					if(e2.getItem()==pay[1]){
+						if(e2.getItem()==time[1]){
+							sel="서라벌, 김밥천국";
+						}
+						else if(e2.getItem()==time[2]){
+							sel="산초메";
+						}
+						else{
+							sel="조회 정보 없음19";
+						}
+						
+					}
+					else{
+						sel="조회 정보 없음20";
+					}
+					
+				}
+				else if(e2.getItem()==food[9]){
+					if(e2.getItem()==pay[0]){
+						if(e2.getItem()==time[1]){
+							sel="매콤달콤";
+						}
+						else if(e2.getItem()==time[2]){
+							sel="청년 떡볶이";
+						}
+						else{
+							sel="조회 정보 없음21";
+						}
+						
+					}
+					else if(e2.getItem()==pay[1]){
+						if(e2.getItem()==time[2]){
+							sel="작은 공간, 신안골";
+						}
+						else{
+							sel="조회 정보 없음22";
+						}
+						
+					}
+					else{
+						sel="조회 정보 없음23";
+					}
+					
+				}
+				else if(e2.getItem()==food[10]){
+					if(e2.getItem()==pay[2]){
+						if(e2.getItem()==time[2]){
+							sel="또래오래";
+						}
+						else{
+							sel="조회 정보 없음24";
+						}
+						
+					}
+					else{
+						sel="조회 정보 없음25";
+					}
+					
+				}
+				else if(e2.getItem()==food[11]){
+						if(e2.getItem()==time[0]){
+							sel="B동리앙, 학관리앙, knock";
+						}
+						else if(e2.getItem()==time[1]){
+							sel="요거프레소, 달콤한 청춘";
+						}
+						else if(e2.getItem()==time[2]){
+							sel="킴스커피, 카페멜론, 세컨드로드, 두남자, 미스티 블루";
+						}
+						else{
+							sel="단콩, 홍카페";
+						}
+				}
+				else{
+					sel="조회 정보 없음26";
+				}
+			}
+			else{
+				System.out.print("오류");
+			sel="조회 정보 없음27";}*/
+			//select.setText(sel);
+			
+			
+		}
+	}
+}
+/*class Health extends JFrame{ // 자가진단에 관한 내용~> 문제가 있어 잘 실행되지 않는 클래스
+	JCheckBox[] illness = new JCheckBox[17]; 
+	String[] name = {"구토를 한다","발열증세가 있다","복통이 있다","배변장애가 있다(설사, 장 경련)","두통 및 현기증이 있다","몸이 덜덜 떨린다",
+			"누렇고 끈적이는 콧물이 흐른다","피로감, 무기력함이 있다","호흡을 하는데 어려움이 있다","목에 무언가 걸려있는 느낌이 있다","음식을 삼키기 힘들다","식욕이 없다",
+			"코가 막힌다","콧물이 목 뒤로 넘어가는 증상이 있다","고열 상태가 지속된다","숨이 가쁘고 거칠다","가래가 차오른다"}; //병 증상
+	JLabel stateLabel;
+	Health(){
+		setTitle("Health");
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		Container c = getContentPane();
+		//c.setLayout(new BorderLayout(5,5));
+		c.setLayout(new FlowLayout());
+		healthitem itemlistener1 = new healthitem();
+		//JPanel J = new JPanel(new GridLayout(5,5));
+		
+		c.add(new JLabel("해당하는 증상 중복체크"), BorderLayout.NORTH);//문구
+		//c.add(J, BorderLayout.CENTER);	
+		
+		for(int i=0;i<illness.length;i++){
+			illness[i]=new JCheckBox(name[i]);//payname[]의 문자열로 체크박스생성
+			illness[i].setBorderPainted(true);//체크박스 외곽선이 보이도록 설정
+			//J.add(illness[i]);//컨텐트팬, JPanel에 체크박스 삽입
+			c.add(illness[i]);//컨텐트팬, JPanel에 체크박스 삽입
+			illness[i].addItemListener(itemlistener1);//체크박스에 Item리스너 등록
+		}
+		stateLabel = new JLabel("당신은 이런 병을 가지고 있습니다.");
+		c.add(stateLabel);
+		setSize(600,300);
+		setVisible(true);
+	}
+
+	class healthitem implements ItemListener{// Eat, Health 클래스를 위한 아이템 리스너
+		public void itemStateChanged(ItemEvent e3) {
+			String state = null;
+			if(e3.getStateChange()==ItemEvent.SELECTED){
+				if((e3.getItem()==illness[0]&&e3.getItem()==illness[1]&&e3.getItem()==illness[2])||
+						(e3.getItem()==illness[0]&&e3.getItem()==illness[1]&&e3.getItem()==illness[3])||
+						(e3.getItem()==illness[0]&&e3.getItem()==illness[2]&&e3.getItem()==illness[3])||
+						(e3.getItem()==illness[1]&&e3.getItem()==illness[2]&&e3.getItem()==illness[3])){
+						state="식중독일 가능성이 높습니다.";
+						System.out.print("!");
+				}
+				else if((e3.getItem()==name[1]&&e3.getItem()==illness[4]&&e3.getItem()==illness[5])||
+						(e3.getItem()==illness[1]&&e3.getItem()==illness[4]&&e3.getItem()==illness[6])||
+						(e3.getItem()==illness[1]&&e3.getItem()==illness[5]&&e3.getItem()==illness[6])||
+						(e3.getItem()==illness[4]&&e3.getItem()==illness[5]&&e3.getItem()==illness[6])){
+						state="몸살 감기일 가능성이 높습니다.";
+					//JOptionPane.showMessageDialog(null, "몸살 감기일 가능성이 높습니다","결과",JOptionPane.ERROR_MESSAGE);
+				}
+				else if((e3.getItem()==illness[4]&&e3.getItem()==illness[7])||
+						(e3.getItem()==illness[4]&&e3.getItem()==illness[8])||
+						(e3.getItem()==illness[7]&&e3.getItem()==illness[8])){
+					state="철 결핍성 빈혈일 가능성이 높습니다.";
+					//JOptionPane.showMessageDialog(null, "철 결핍성 빈혈일 가능성이 높습니다","결과",JOptionPane.ERROR_MESSAGE);
+				}
+				else if((e3.getItem()==illness[9]&&e3.getItem()==illness[10])||
+						(e3.getItem()==illness[9]&&e3.getItem()==illness[11])||
+						(e3.getItem()==illness[10]&&e3.getItem()==illness[11])){
+					state="인후두염일 가능성이 높습니다.";
+					//JOptionPane.showMessageDialog(null, "인후두염일 가능성이 높습니다","결과",JOptionPane.ERROR_MESSAGE);
+				}
+				else if((e3.getItem()==illness[6]&&e3.getItem()==illness[13])||
+						(e3.getItem()==illness[6]&&e3.getItem()==illness[13])||
+						(e3.getItem()==illness[12]&&e3.getItem()==illness[13])){
+					state="축농증일 가능성이 높습니다.";
+					//JOptionPane.showMessageDialog(null, "축농증일 가능성이 높습니다","결과",JOptionPane.ERROR_MESSAGE);
+				}
+				else if((e3.getItem()==illness[1]&&e3.getItem()==illness[14]&&e3.getItem()==illness[15])||
+						(e3.getItem()==illness[1]&&e3.getItem()==illness[14]&&e3.getItem()==illness[16])||
+						(e3.getItem()==illness[1]&&e3.getItem()==illness[15]&&e3.getItem()==illness[16])||
+						(e3.getItem()==illness[14]&&e3.getItem()==illness[15]&&e3.getItem()==illness[16])){
+					state="폐렴일 가능성이 높습니다.";
+					//JOptionPane.showMessageDialog(null, "폐렴일 가능성이 높습니다","결과",JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			else{
+			}
+			stateLabel.setText(state);
+		}
+	}
+
+}*/
+class Health extends JFrame{
+	JButton start = new JButton("진단 시작");
+	Health(){
+		setTitle("Health");
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		Container c = getContentPane();
+		c.setLayout(new FlowLayout());
+		c.add(start);
+		start.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				int result=JOptionPane.showConfirmDialog(null,"발열이 있습니까?","자가 진단",JOptionPane.YES_NO_OPTION);
+				if(result==JOptionPane.YES_OPTION){
+					
+					int result1=JOptionPane.showConfirmDialog(null,"고열이 지속되고 있습니까?","자가 진단",JOptionPane.YES_NO_OPTION);
+					if(result1==JOptionPane.YES_OPTION){
+						JOptionPane.showMessageDialog(null,"폐렴일 가능성이 높습니다.","결과",JOptionPane.WARNING_MESSAGE);
+					}
+					
+					else if(result1==JOptionPane.NO_OPTION){
+						
+						int result2=JOptionPane.showConfirmDialog(null,"구토를 하거나 복통이 있습니까?","자가 진단",JOptionPane.YES_NO_OPTION);
+						if(result2==JOptionPane.YES_OPTION){
+							JOptionPane.showMessageDialog(null,"장염일 가능성이 높습니다.","결과",JOptionPane.WARNING_MESSAGE);
+						}
+						
+						else if(result2==JOptionPane.NO_OPTION){
+							JOptionPane.showMessageDialog(null,"몸살 감기일 가능성이 높습니다.","결과",JOptionPane.WARNING_MESSAGE);
+						}
+					}
+				}
+				
+				else if(result==JOptionPane.NO_OPTION){
+
+					
+					int result3=JOptionPane.showConfirmDialog(null,"콧물의 양이 많습니까?","자가 진단",JOptionPane.YES_NO_OPTION);
+					if(result3==JOptionPane.YES_OPTION){
+						int result5=JOptionPane.showConfirmDialog(null,"코가 막히고 콧물이 목뒤로 넘어갑니까?","자가 진단",JOptionPane.YES_NO_OPTION);
+		
+						if(result5==JOptionPane.YES_OPTION){
+							JOptionPane.showMessageDialog(null,"축농증일 가능성이 높습니다.","결과",JOptionPane.WARNING_MESSAGE);
+						}
+						
+						else if(result5==JOptionPane.NO_OPTION){
+							JOptionPane.showMessageDialog(null,"코감기일 가능성이 높습니다.","결과",JOptionPane.WARNING_MESSAGE);
+						}
+					}
+					
+					else if(result3==JOptionPane.NO_OPTION){
+						
+						int result4=JOptionPane.showConfirmDialog(null,"목에 무언가가 걸려있는 느낌이 있거나 음식을 삼키기 힘듭니까?","자가 진단",JOptionPane.YES_NO_OPTION);
+						if(result4==JOptionPane.YES_OPTION){
+							JOptionPane.showMessageDialog(null,"인후두염일 가능성이 높습니다.","결과",JOptionPane.WARNING_MESSAGE);
+						}
+						
+						else if(result4==JOptionPane.NO_OPTION){
+							int result6=JOptionPane.showConfirmDialog(null,"두통이 있거나 현기증이 있습니까?","자가 진단",JOptionPane.YES_NO_OPTION);
+							if(result6==JOptionPane.YES_OPTION){
+								JOptionPane.showMessageDialog(null,"철 결핍성 빈혈일 가능성이 높습니다.","결과",JOptionPane.WARNING_MESSAGE);
+							}
+							
+							else if(result6==JOptionPane.NO_OPTION){
+								JOptionPane.showMessageDialog(null,"병원에 가서 진찰을 받으십시오. 어떤 병인지 모르겠습니다.","결과",JOptionPane.WARNING_MESSAGE);
+							}
+			
+						}
+					}
+				
+					
+				}
+			}
+			
+		});
+		setSize(100,100);
+		setVisible(true);
+	}
+}
+
+class FavoriteSite extends JFrame{ // 하이퍼링크는 구현불가, 의미 부여(자주 가는 사이트정보 열람)
+	JTextArea ta = new JTextArea(45,30); //줄, 길이로 구성된 노트와 같은 존재 선언
+	JTextField tf = new JTextField(20); //일자로 된 공간 선언
+	FavoriteSite(){
+		setTitle("FavoriteSite");
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Container c = getContentPane();
+		c.setLayout(new BorderLayout(0,10));
+		c.add(new JLabel("입력 후 <Enter> 키를 입력하세요, 자동 저장됩니다. 입력시에 주의해서 입력하시오. ( 자주 가는 사이트 등록 후 어디였는지 조회 )"),BorderLayout.NORTH);
+		c.add(new JScrollPane(ta),BorderLayout.SOUTH); //Area를 스크롤팬에 부착
+		c.add(tf,BorderLayout.CENTER);
+		String filename[] = {"Favorite0.txt","Favorite1.txt","Favorite2.txt","Favorite3.txt","Favorite4.txt",
+				"Favorite5.txt"	,"Favorite6.txt","Favorite7.txt","Favorite8.txt","Favorite9.txt","Favorite10.txt"
+				,"Favorite11.txt","Favorite12.txt","Favorite13.txt","Favorite14.txt","Favorite15.txt",
+				"Favorite16.txt","Favorite17.txt","Favorite18.txt","Favorite19.txt"}; // 캡슐화 ~> 각 유저마다 저장 공간을 따로만듬
+		Check cc= new Check();
+		int l = cc.data(); //만든 유저의 순서번호를 가져옴
+		 try {
+	    	  for(int ff=0;ff<filename.length;ff++){//파일생성
+	        	File f1 = new File(filename[ff]);
+	            f1.createNewFile();
+	            }
+	        } catch (IOException e1) {
+	            e1.printStackTrace();
+	        }
+		try {
+			//FileOutputStream note = new FileOutputStream("note.txt");
+			FileReader note1 = new FileReader(filename[l]);
+			int c1;
+			while((c1=note1.read())!=-1){//파일 읽어오기
+				char ccc = (char)c1;
+				ta.append(Character.toString(ccc));//Area에 다시부착(정보 다시 가져오기)
+			}
+			//note.close();
+			note1.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		tf.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e4){
+				JTextField t1 = (JTextField)e4.getSource();
+					ta.append(t1.getText()+"\n");//textfield에 입력된 정보를 area에 저장
+					try {
+						FileOutputStream note = new FileOutputStream(filename[l],true);//입력 정보를 파일에 저장
+						
+						note.write((t1.getText()+"\n").getBytes());
+						note.close();
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					t1.setText("");
+				}
+		});
+		setSize(1000,1000);
+		setVisible(true);
+	}
+}
+class Note extends JFrame{//낙서장, 메모장, 구현방식은 Favorite과 동일 . 하지만 추구하는 기능은 다름
+	JTextArea ta = new JTextArea(45,30);
+	JTextField tf = new JTextField(20);
+	Note(){
+		setTitle("Note");
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		String filename[] = {"note0.txt","note1.txt","note2.txt","note3.txt","note4.txt","note5.txt","note6.txt","note7.txt",
+				"note8.txt","note9.txt","note10.txt","note11.txt","note12.txt","note13.txt","note14.txt"
+				,"note15.txt","note16.txt","note17.txt","note18.txt","note19.txt","note20.txt"};// 캡슐화
+		Container c = getContentPane();
+		c.setLayout(new BorderLayout(0,10));
+		c.add(new JLabel("입력 후 <Enter> 키를 입력하세요, 자동 저장됩니다. 입력시에 주의해서 입력하시오."),BorderLayout.NORTH);
+		c.add(new JScrollPane(ta),BorderLayout.SOUTH);
+		c.add(tf,BorderLayout.CENTER);
+		Check cc= new Check();
+		int l = cc.data();
+		 
+	      try {
+	    	  for(int ff=0;ff<filename.length;ff++){
+	        	File f1 = new File(filename[ff]);
+	            f1.createNewFile();
+	            }
+	        } catch (IOException e1) {
+	            e1.printStackTrace();
+	        }
+		try {
+			//FileOutputStream note = new FileOutputStream("note.txt");
+			FileReader note1 = new FileReader(filename[l]);
+			int c1;
+			while((c1=note1.read())!=-1){
+				char ccc = (char)c1;
+				ta.append(Character.toString(ccc));
+			}
+			//note.close();
+			note1.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		tf.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e4){
+				JTextField t1 = (JTextField)e4.getSource();
+					ta.append(t1.getText()+"\n");
+					try {
+						FileOutputStream note = new FileOutputStream(filename[l],true);
+						note.write((t1.getText()+"\n").getBytes());
+						note.close();
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					t1.setText("");
+				}
+		});
+		setSize(1000,1000);
+		setVisible(true);
+	}
+}
+class Login extends JFrame{ // Login하기 위한 클래스
+	Login(){
+		setTitle("Login");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		Container c = getContentPane();
+		c.setLayout(new FlowLayout());
+		JPanel J = new JPanel(new BorderLayout(5,5));
+		c.add(new Label("ID, PassWord(입력 방법), 로그인 하려면 <Enter>하세요"));
+		//c.add(new Label(""));
+		JTextField tf = new JTextField(20);
+		c.add(tf);
+		tf.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e3){
+				JTextField t1 = (JTextField)e3.getSource();
+					Check c = new Check();
+					String shared = t1.getText();
+					c.check(shared);//입력한 정보를 비교해서 등록되어 있는 유저인지 확인
+				}
+		});
+		JButton but1 = new JButton("Add");
+		JButton but2 = new JButton("delete");
+		but1.addActionListener(new Action());
+		J.add(but1);
+		but2.addActionListener(new Action());
+		J.add(but2);
+		c.requestFocus();
+		c.add(but1, BorderLayout.WEST);
+		c.add(but2, BorderLayout.EAST);
+		setSize(400,130);
+		setVisible(true);
+	}
+}
+class Check{
+	static private String dataidpw; // 로그인 할 때의 유저의 정보
+	static private int k=0; // index값
+	static private String[] IDPW = new String[100]; // 저장되는 유저의 정보
+	public int data(){ //어떤 유저가 이전 정보로 다시 로그인 했을 때 정보를 불러오기 위한 메소드
+		int num=0;
+		for(int i=0;i<100;i++){	
+			if(dataidpw.equals(IDPW[i])){
+				num = i;
+		}
+	}
+		return num;
+	}
+	public void add(String idpw){ // 정보추가
+		//System.out.print("data in\n");
+		IDPW[k++]=idpw;
+	}
+	public void delete(String idpw){ // 정보삭제
+		int a;
+		for(a=0;a<k;a++){
+			if(idpw.equals(IDPW[a])){
+				IDPW[a]="0";	
+			}
+		}
+	}
+	public void check(String idpw){ // 등록된 유저인지 확인하고 true면 studentActivity실행
+		dataidpw=idpw;
+		int i = 0;
+		for(i=0;i<100;i++){	
+		if(idpw.equals(IDPW[i])){
+			new StudentActivity();
+				}
+			}
+		}
+}
+class Action implements ActionListener{ // StudentActivity, Check, Login을 위한 액션리스너
+	public void actionPerformed(ActionEvent e1) {
+		JButton b = (JButton)e1.getSource();//button의 입력값 받아와서 해당 정보가 true면 각 기능을 수행하게 함.
+		Check c = new Check();
+		if(b.getText().equals("What's Eat?")){
+			new Eat();
+		}
+		else if(b.getText().equals("My Health?")){
+			new Health();
+		}
+		else if(b.getText().equals("Favorite Site")){
+			new FavoriteSite();
+		}
+		else if(b.getText().equals("Note")){
+			new Note();
+		}
+		else if(b.getText().equals("Add")){
+			String name=JOptionPane.showInputDialog("구조:ID, PassWord"); //정보를 받을 수 있는 팝업창
+			if(name!=null){
+				c.add(name);
+			}
+		}
+		else if(b.getText().equals("delete")){
+			String name=JOptionPane.showInputDialog("구조:ID, PassWord");
+			if(name!=null){
+				c.delete(name);
+			}
+		}
+	}
+}
+
+class MenuListener implements ActionListener{ // 메뉴를 위한 리스너
+
+	public void actionPerformed(ActionEvent e) {
+	String A = e.getActionCommand(); //커맨드 값을 가져옴
+	switch(A){
+	case "Favorite Data": //메뉴 Favorite Data를 눌럿을 경우
+		Check cFavor= new Check();
+		int favor = cFavor.data();//현재 유저의 정보를 가져옴
+		String favordata = "Favorite"+favor+".txt";//해당 유저가 쓰고 있는 저장공간의 정보
+		//System.out.println(favordata);
+		File favorfile = new File(favordata);
+		if(favorfile.isFile()){//file이 존재한다면 삭제
+			favorfile.delete();//삭제
+		}
+		 File f1 = new File(favordata);
+	        try {
+	            f1.createNewFile();// 다시 생성 ~~> 삭제 후 내용이 없는 파일로 다시 생성, 즉 초기화 구현
+	        } catch (IOException e1) {
+	            e1.printStackTrace();
+	        }
+		break;
+	case "Note Data"://메뉴Note Data를 눌럿을 경우, 밑은 구현 방식 동일
+		Check cNote= new Check();
+		int fnote = cNote.data();
+		String fnotedata = "note"+fnote+".txt";
+		File fnotefile = new File(fnotedata);
+		if(fnotefile.isFile()){
+			fnotefile.delete();
+		}
+		 File f2 = new File(fnotedata);
+	        try {
+	            f2.createNewFile();
+	        } catch (IOException e1) {
+	            e1.printStackTrace();
+	        }
+		break;
+	}
+	}
+	
+}
